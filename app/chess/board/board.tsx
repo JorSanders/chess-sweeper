@@ -1,47 +1,112 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
+import { generatePieces } from "../lib/generatePieces";
 import { generateTiles } from "../lib/generateTiles";
 import { revealAllTiles } from "../lib/realAllTiles";
 import { revealConnectedTiles } from "../lib/revealConnectedTiles";
 import { Tile } from "../tile/tile";
-import { Piece } from "../types/Piece";
 import { Tile as TileType } from "../types/Tile";
 import styles from "./board.module.css";
 
 interface Props {
-  pieces: Piece[];
   tilesPerColumn: number;
   tilesPerRow: number;
 }
 
-type GameState = "playing" | "defeat" | "victory";
+type GameState = "playing" | "victory" | "defeat" | "initial";
 
-export const Board = ({ pieces, tilesPerRow, tilesPerColumn }: Props) => {
-  const [gameState, setGameState] = useState<GameState>("playing");
+interface BoardState {
+  gameState: GameState;
+  tiles: TileType[][];
+}
 
-  const [tiles, setTiles] = useState<TileType[][]>(
-    generateTiles({ tilesPerColumn, tilesPerRow, pieces }),
-  );
+type BoardAction =
+  | {
+      action: "start";
+      tilesPerColumn: number;
+      tilesPerRow: number;
+      pieceCount: number;
+    }
+  | {
+      action: "reveal";
+      tile: TileType;
+    };
+
+const BoardStateReducer = (
+  state: BoardState,
+  action: BoardAction,
+): BoardState => {
+  switch (action.action) {
+    case "start": {
+      const { tilesPerColumn, tilesPerRow, pieceCount } = action;
+      const pieces = generatePieces({
+        tilesPerColumn,
+        tilesPerRow,
+        count: pieceCount,
+      });
+
+      const newTiles = generateTiles({
+        tilesPerColumn,
+        tilesPerRow,
+        pieces,
+      });
+      return { gameState: "playing", tiles: newTiles };
+    }
+    case "reveal": {
+      if (action.tile.piece) {
+        return {
+          gameState: "defeat",
+          tiles: revealAllTiles(state.tiles),
+        };
+      }
+      const newTiles = revealConnectedTiles(state.tiles, action.tile);
+      const remainingTile = newTiles.find((column) =>
+        column.find((tile) => !tile.revealed && !!tile.piece),
+      );
+      if (!remainingTile) {
+        return {
+          gameState: "victory",
+          tiles: revealAllTiles(state.tiles),
+        };
+      }
+      return {
+        gameState: "playing",
+        tiles: revealConnectedTiles(state.tiles, action.tile),
+      };
+    }
+  }
+};
+
+const intialBoardState: BoardState = {
+  gameState: "initial",
+  tiles: [],
+};
+
+export const Board = ({ tilesPerRow, tilesPerColumn }: Props) => {
+  const [boardState, dispatch] = useReducer(BoardStateReducer, {
+    gameState: "initial",
+    tiles: [],
+  });
 
   useEffect(() => {
-    const nonRevealedTile = tiles.find((column) =>
-      column.find((tile) => !tile.revealed),
-    );
-    if (!nonRevealedTile && gameState !== "defeat") {
-      setGameState("victory");
-    }
-  });
+    dispatch({
+      action: "start",
+      tilesPerColumn: 8,
+      tilesPerRow: 8,
+      pieceCount: 1,
+    });
+  }, []);
 
   return (
     <>
-      {gameState === "defeat" && <h2>Boom</h2>}
-      {gameState === "victory" && <h2>Yay</h2>}
+      {boardState.gameState === "defeat" && <h2>Boom</h2>}
+      {boardState.gameState === "victory" && <h2>Yay</h2>}
       <div
         className={styles.board}
         style={{ gridTemplateColumns: `repeat(${tilesPerRow}, 1fr)` }}
       >
-        {tiles
+        {boardState.tiles
           .map((column) => {
             return column.map((tile) => {
               return (
@@ -52,12 +117,7 @@ export const Board = ({ pieces, tilesPerRow, tilesPerColumn }: Props) => {
                   attackedByCount={tile.attackedByCount}
                   piece={tile.piece}
                   onClick={() => {
-                    if (tile.piece) {
-                      setGameState("defeat");
-                      setTiles(revealAllTiles(tiles));
-                      return;
-                    }
-                    setTiles(revealConnectedTiles(tiles, tile));
+                    dispatch({ action: "reveal", tile });
                   }}
                 ></Tile>
               );

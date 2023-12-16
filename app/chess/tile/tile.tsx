@@ -13,6 +13,24 @@ interface Props {
   attributes: HTMLAttributes<HTMLButtonElement>;
 }
 
+const dangerClassNameMap = (attackedByCount: number) => {
+  switch (attackedByCount) {
+    case 0:
+      return "";
+    case 1:
+      return `${styles.dangerLevelOne}`;
+    case 2:
+      return `${styles.dangerLevelTwo}`;
+    case 3:
+      return `${styles.dangerLevelThree}`;
+    case 4:
+      return `${styles.dangerLevelFour}`;
+    case 5:
+    default:
+      return `${styles.dangerLevelFive}`;
+  }
+};
+
 export const Tile = ({
   revealed,
   isDarkSquare,
@@ -57,7 +75,9 @@ export const Tile = ({
 
   return (
     <button
-      className={`${styles.tile} ${isDarkSquare ? styles.dark : styles.light}`}
+      className={`${styles.tile} ${
+        isDarkSquare ? styles.dark : styles.light
+      } ${dangerClassNameMap(attackedByCount)}`}
       type="button"
       disabled
       {...attributes}

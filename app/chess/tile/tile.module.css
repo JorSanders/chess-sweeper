@@ -14,6 +14,7 @@
   border-bottom: 6px solid #7b7b7b;
   box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  font-weight: 700;
 }
 
 .tile:disabled {
@@ -35,4 +36,24 @@
 .dark {
   background-color: var(--chess-dark);
   color: var(--chess-light);
+}
+
+.dangerLevelOne {
+  color: #0000ff;
+}
+
+.dangerLevelTwo {
+  color: #097e09;
+}
+
+.dangerLevelThree {
+  color: #ff0000;
+}
+
+.dangerLevelFour {
+  color: #01017b;
+}
+
+.dangerLevelFive {
+  color: #7b0101;
 }

@@ -7,7 +7,7 @@ export default {
   parameters: {
     layout: "fullscreen",
   },
-  args: { itemsPerRow: 8, itemsPerColumn: 8 },
+  args: { tilesPerRow: 8, tilesPerColumn: 8, pieceCount: 5 },
 } satisfies Meta<typeof Chessboard>;
 
 const Template: StoryFn<typeof Chessboard> = (args) => {

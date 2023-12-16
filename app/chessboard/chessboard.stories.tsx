@@ -1,15 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryFn } from "@storybook/react";
 import { Chessboard } from "./chessboard";
 
-const meta = {
+export default {
   title: "App/Chessboard",
   component: Chessboard,
   parameters: {
     layout: "fullscreen",
   },
+  args: { itemsPerRow: 8, itemsPerColumn: 8 },
 } satisfies Meta<typeof Chessboard>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+const Template: StoryFn<typeof Chessboard> = (args) => {
+  return <Chessboard {...args} />;
+};
 
-export const Main: Story = {};
+export const Default = Template.bind({});

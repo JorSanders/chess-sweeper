@@ -1,6 +1,5 @@
 .board {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
   border: 20px solid brown;
   gap: 0;
   width: fit-content;

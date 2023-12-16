@@ -8,7 +8,8 @@ interface Props {
 export const Chessboard = ({ itemsPerRow = 8, itemsPerColumn = 8 }: Props) => {
   const columns = Array.from({ length: itemsPerColumn }, (_, columnIndex) => {
     const rows = Array.from({ length: itemsPerRow }, (_, rowIndex) => {
-      const isDarkSquare = (rowIndex + columnIndex) % 2 === 0;
+      const isDarkSquare =
+        columnIndex % 2 === 0 ? rowIndex % 2 === 0 : rowIndex % 2 === 1;
 
       return (
         <button
@@ -25,7 +26,10 @@ export const Chessboard = ({ itemsPerRow = 8, itemsPerColumn = 8 }: Props) => {
   });
 
   return (
-    <div className={styles.board}>
+    <div
+      className={styles.board}
+      style={{ gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)` }}
+    >
       {columns
         .map((column) => {
           return column.map((row) => {

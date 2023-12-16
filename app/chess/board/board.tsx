@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { generatePieces } from "../lib/generatePieces";
 import { generateTiles } from "../lib/generateTiles";
 import { revealAllTiles } from "../lib/realAllTiles";
@@ -77,19 +77,28 @@ export const Board = () => {
     tiles: [],
   });
 
+  const victoryDialogRef = useRef<HTMLDialogElement | null>(null);
+  const defeatDialogRef = useRef<HTMLDialogElement | null>(null);
+
   useEffect(() => {
     dispatch({
       action: "start",
       tilesPerColumn: 8,
       tilesPerRow: 8,
-      pieceCount: 4,
+      pieceCount: 5,
     });
   }, []);
 
+  if (boardState.gameState === "victory") {
+    victoryDialogRef.current?.show();
+  }
+
+  if (boardState.gameState === "defeat") {
+    defeatDialogRef.current?.show();
+  }
+
   return (
-    <>
-      {boardState.gameState === "defeat" && <h2>Boom</h2>}
-      {boardState.gameState === "victory" && <h2>Yay</h2>}
+    <div className={styles.container}>
       <div
         className={styles.board}
         style={{
@@ -118,6 +127,60 @@ export const Board = () => {
           })
           .reverse()}
       </div>
-    </>
+
+      <dialog ref={victoryDialogRef} className={styles.dialog}>
+        <div className={styles.dialogInside}>
+          <div className={styles.dialogHeading}>
+            <h2>You won!</h2>
+            <p>by luck</p>
+          </div>
+          <div className={styles.dialogContent}>
+            <span>:D</span>
+          </div>
+          <button
+            type="button"
+            className={styles.dialogCloseButton}
+            onClick={() => {
+              victoryDialogRef.current?.close();
+              dispatch({
+                action: "start",
+                tilesPerColumn: 8,
+                tilesPerRow: 8,
+                pieceCount: 5,
+              });
+            }}
+          >
+            <span aria-label="Close">x</span>
+          </button>
+        </div>
+      </dialog>
+
+      <dialog ref={defeatDialogRef} className={styles.dialog}>
+        <div className={styles.dialogInside}>
+          <div className={styles.dialogHeading}>
+            <h2>You got bricked!</h2>
+            <p>on the pipi</p>
+          </div>
+          <div className={styles.dialogContent}>
+            <span>&gt;:</span>
+          </div>
+          <button
+            type="button"
+            className={styles.dialogCloseButton}
+            onClick={() => {
+              defeatDialogRef.current?.close();
+              dispatch({
+                action: "start",
+                tilesPerColumn: 8,
+                tilesPerRow: 8,
+                pieceCount: 5,
+              });
+            }}
+          >
+            <span aria-label="Close">x</span>
+          </button>
+        </div>
+      </dialog>
+    </div>
   );
 };

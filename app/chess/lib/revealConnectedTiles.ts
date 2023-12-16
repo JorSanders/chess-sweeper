@@ -2,7 +2,6 @@ import { Tile } from "../types/Tile";
 
 const recursiveRealTiles = (tiles: Tile[][], tile: Tile) => {
   if (tile.attackedByCount !== 0 || tile.revealed) {
-    console.log({ tile });
     return;
   }
 

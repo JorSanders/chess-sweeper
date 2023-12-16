@@ -1,24 +1,23 @@
 "use client";
 
-import { useState } from "react";
 import { Piece } from "../types/Piece";
 import styles from "./tile.module.css";
 
 interface Props {
+  revealed: boolean;
   isDarkSquare: boolean;
   piece?: Piece;
   attackedByCount: number;
-  pieceHit: () => void;
+  onClick: () => void;
 }
 
 export const Tile = ({
+  revealed,
   isDarkSquare,
   piece,
   attackedByCount,
-  pieceHit,
+  onClick,
 }: Props) => {
-  const [revealed, setRevealed] = useState(false);
-
   if (!revealed) {
     return (
       <button
@@ -27,10 +26,7 @@ export const Tile = ({
         } ${styles.notRevealed}`}
         type="button"
         onClick={() => {
-          if (piece) {
-            pieceHit();
-          }
-          setRevealed(true);
+          onClick();
         }}
       >
         ?

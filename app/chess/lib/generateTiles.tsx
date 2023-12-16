@@ -1,4 +1,3 @@
-import { Tile } from "../tile/tile";
 import { Piece } from "../types/Piece";
 import { Tile as TileType } from "../types/Tile";
 
@@ -37,18 +36,11 @@ export const generateTiles = ({
         });
 
         return {
-          element: (
-            <Tile
-              key={`${columnIndex}-${rowIndex}`}
-              isDarkSquare={isDarkSquare}
-              piece={piece}
-              attackedByCount={attackedByCount}
-              pieceHit={() => {}}
-            ></Tile>
-          ),
           position: { row: rowIndex, column: columnIndex },
           piece,
           revealed: false,
+          isDarkSquare,
+          attackedByCount,
         };
       });
       return rows;

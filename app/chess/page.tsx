@@ -1,3 +1,3 @@
-import { ChessSweeper } from "./ChessSweeper";
+import { Board } from "./board/board";
 
-export default () => <ChessSweeper></ChessSweeper>;
+export default () => <Board></Board>;

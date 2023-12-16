@@ -1,6 +1,7 @@
 "use client";
 
 import { HTMLAttributes } from "react";
+import { ChessPiece } from "../chessPiece/chesssPiece";
 import { Piece } from "../types/Piece";
 import styles from "./tile.module.css";
 
@@ -33,6 +34,28 @@ export const Tile = ({
     );
   }
 
+  if (!!piece) {
+    return (
+      <button
+        className={`${styles.tile} ${
+          isDarkSquare ? styles.dark : styles.light
+        }`}
+        type="button"
+        disabled
+        {...attributes}
+      >
+        {piece ? (
+          <ChessPiece
+            attributes={{ className: styles.icon }}
+            pieceType={piece.type}
+          ></ChessPiece>
+        ) : (
+          attackedByCount
+        )}
+      </button>
+    );
+  }
+
   return (
     <button
       className={`${styles.tile} ${isDarkSquare ? styles.dark : styles.light}`}
@@ -40,7 +63,7 @@ export const Tile = ({
       disabled
       {...attributes}
     >
-      {piece ? piece.type : attackedByCount}
+      {attackedByCount}
     </button>
   );
 };

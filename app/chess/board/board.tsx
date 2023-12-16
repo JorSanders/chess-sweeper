@@ -9,11 +9,6 @@ import { Tile } from "../tile/tile";
 import { Tile as TileType } from "../types/Tile";
 import styles from "./board.module.css";
 
-interface Props {
-  tilesPerColumn: number;
-  tilesPerRow: number;
-}
-
 type GameState = "playing" | "victory" | "defeat" | "initial";
 
 interface BoardState {
@@ -83,7 +78,7 @@ const intialBoardState: BoardState = {
   tiles: [],
 };
 
-export const Board = ({ tilesPerRow, tilesPerColumn }: Props) => {
+export const Board = () => {
   const [boardState, dispatch] = useReducer(BoardStateReducer, {
     gameState: "initial",
     tiles: [],
@@ -94,7 +89,7 @@ export const Board = ({ tilesPerRow, tilesPerColumn }: Props) => {
       action: "start",
       tilesPerColumn: 8,
       tilesPerRow: 8,
-      pieceCount: 1,
+      pieceCount: 10,
     });
   }, []);
 
@@ -104,7 +99,9 @@ export const Board = ({ tilesPerRow, tilesPerColumn }: Props) => {
       {boardState.gameState === "victory" && <h2>Yay</h2>}
       <div
         className={styles.board}
-        style={{ gridTemplateColumns: `repeat(${tilesPerRow}, 1fr)` }}
+        style={{
+          gridTemplateColumns: `repeat(${boardState.tiles[0]?.length}, 1fr)`,
+        }}
       >
         {boardState.tiles
           .map((column) => {

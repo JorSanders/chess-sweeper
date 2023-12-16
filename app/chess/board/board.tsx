@@ -9,10 +9,8 @@ import { Tile } from "../tile/tile";
 import { Tile as TileType } from "../types/Tile";
 import styles from "./board.module.css";
 
-type GameState = "playing" | "victory" | "defeat" | "initial";
-
 interface BoardState {
-  gameState: GameState;
+  gameState: "playing" | "victory" | "defeat" | "initial";
   tiles: TileType[][];
 }
 
@@ -71,11 +69,6 @@ const BoardStateReducer = (
       };
     }
   }
-};
-
-const intialBoardState: BoardState = {
-  gameState: "initial",
-  tiles: [],
 };
 
 export const Board = () => {

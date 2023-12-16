@@ -1,0 +1,19 @@
+.main {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding-top: 30px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  margin-bottom: 8px;
+}

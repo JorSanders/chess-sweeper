@@ -1,32 +1,54 @@
 "use client";
+import Image from "next/image";
 
-import { HTMLAttributes } from "react";
 import { PieceType } from "../types/PieceType";
-import Bishop from "./../icons/Bishop.svg";
-import King from "./../icons/King.svg";
-import Knight from "./../icons/Knight.svg";
-import Pawn from "./../icons/Pawn.svg";
-import Queen from "./../icons/Queen.svg";
-import Rook from "./../icons/Rook.svg";
 
 interface Props {
   pieceType: PieceType;
-  attributes: HTMLAttributes<HTMLButtonElement>;
+  height: number;
+  width: number;
 }
 
-export const ChessPiece = ({ pieceType, attributes }: Props) => {
+export const ChessPiece = ({ pieceType, height, width }: Props) => {
   switch (pieceType) {
     case "p":
-      return <Pawn {...attributes}></Pawn>;
+      return (
+        <Image src="/Pawn.svg" alt="Pawn" height={height} width={width}></Image>
+      );
     case "r":
-      return <Rook {...attributes}></Rook>;
+      return (
+        <Image src="/Rook.svg" alt="Rook" height={height} width={width}></Image>
+      );
     case "n":
-      return <Knight {...attributes}></Knight>;
+      return (
+        <Image
+          src="/Knight.svg"
+          alt="Knight"
+          height={height}
+          width={width}
+        ></Image>
+      );
     case "b":
-      return <Bishop {...attributes}></Bishop>;
+      return (
+        <Image
+          src="/Bishop.svg"
+          alt="Bishop"
+          height={height}
+          width={width}
+        ></Image>
+      );
     case "k":
-      return <King {...attributes}></King>;
+      return (
+        <Image src="/King.svg" alt="King" height={height} width={width}></Image>
+      );
     case "q":
-      return <Queen {...attributes}></Queen>;
+      return (
+        <Image
+          src="/Queen.svg"
+          alt="Queen"
+          height={height}
+          width={width}
+        ></Image>
+      );
   }
 };

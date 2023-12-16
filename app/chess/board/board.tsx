@@ -89,7 +89,7 @@ export const Board = () => {
       action: "start",
       tilesPerColumn: 8,
       tilesPerRow: 8,
-      pieceCount: 10,
+      pieceCount: 4,
     });
   }, []);
 

@@ -46,7 +46,8 @@ export const Tile = ({
       >
         {piece ? (
           <ChessPiece
-            attributes={{ className: styles.icon }}
+            height={45}
+            width={45}
             pieceType={piece.type}
           ></ChessPiece>
         ) : (
@@ -63,7 +64,7 @@ export const Tile = ({
       disabled
       {...attributes}
     >
-      {attackedByCount}
+      {attackedByCount > 0 && attackedByCount}
     </button>
   );
 };

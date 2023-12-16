@@ -5,6 +5,21 @@
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
+  border: unset;
+  position: relative;
+  box-sizing: border-box;
+  border-left: 4px solid #fefffe;
+  border-top: 4px solid #fefffe;
+  border-right: 4px solid #7b7b7b;
+  border-bottom: 4px solid #7b7b7b;
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.tile:disabled {
+  box-shadow: unset;
+  border: unset;
 }
 
 .icon {
@@ -13,11 +28,11 @@
 }
 
 .light {
-  background-color: white;
-  color: gray;
+  background-color: #f0dbb4;
+  color: #b48762;
 }
 
 .dark {
-  background-color: gray;
-  color: white;
+  background-color: #b48762;
+  color: #f0dbb4;
 }

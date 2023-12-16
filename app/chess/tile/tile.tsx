@@ -28,9 +28,7 @@ export const Tile = ({
         } ${styles.notRevealed}`}
         type="button"
         {...attributes}
-      >
-        ?
-      </button>
+      ></button>
     );
   }
 

@@ -1,6 +1,6 @@
 import { Tile } from "../types/Tile";
 
-const recursiveRealTiles = (tiles: Tile[][], tile: Tile) => {
+const recursiveRevealTiles = (tiles: Tile[][], tile: Tile) => {
   if (tile.attackedByCount !== 0 || tile.revealed) {
     return;
   }
@@ -23,7 +23,7 @@ const recursiveRealTiles = (tiles: Tile[][], tile: Tile) => {
       if (row < 0 || row > tiles[column].length - 1) {
         break;
       }
-      recursiveRealTiles(tiles, tiles[column][row]);
+      recursiveRevealTiles(tiles, tiles[column][row]);
     }
   }
 };
@@ -33,7 +33,7 @@ export const revealConnectedTiles = (tiles: Tile[][], tile: Tile) => {
   const tilesCopy = JSON.parse(JSON.stringify(tiles));
   const tileCopy = tilesCopy[tile.position.column][tile.position.row];
 
-  recursiveRealTiles(tilesCopy, tileCopy);
+  recursiveRevealTiles(tilesCopy, tileCopy);
   tileCopy.revealed = true;
 
   return tilesCopy;

@@ -1,5 +1,6 @@
 "use client";
 
+import { HTMLAttributes } from "react";
 import { Piece } from "../types/Piece";
 import styles from "./tile.module.css";
 
@@ -8,7 +9,7 @@ interface Props {
   isDarkSquare: boolean;
   piece?: Piece;
   attackedByCount: number;
-  onClick: () => void;
+  attributes: HTMLAttributes<HTMLButtonElement>;
 }
 
 export const Tile = ({
@@ -16,7 +17,7 @@ export const Tile = ({
   isDarkSquare,
   piece,
   attackedByCount,
-  onClick,
+  attributes,
 }: Props) => {
   if (!revealed) {
     return (
@@ -25,9 +26,7 @@ export const Tile = ({
           isDarkSquare ? styles.dark : styles.light
         } ${styles.notRevealed}`}
         type="button"
-        onClick={() => {
-          onClick();
-        }}
+        {...attributes}
       >
         ?
       </button>
@@ -39,6 +38,7 @@ export const Tile = ({
       className={`${styles.tile} ${isDarkSquare ? styles.dark : styles.light}`}
       type="button"
       disabled
+      {...attributes}
     >
       {piece ? piece.type : attackedByCount}
     </button>

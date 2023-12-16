@@ -1,7 +1,7 @@
 import { Tile } from "../types/Tile";
 
 const recursiveRevealTiles = (tiles: Tile[][], tile: Tile) => {
-  if (tile.attackedByCount !== 0 || tile.revealed) {
+  if (tile.attackedByCount !== 0 || tile.revealed || !!tile.piece) {
     return;
   }
 
@@ -15,11 +15,7 @@ const recursiveRevealTiles = (tiles: Tile[][], tile: Tile) => {
     if (column < 0 || column > tiles.length - 1) {
       break;
     }
-    for (
-      let row = tile.position.row - 1;
-      row <= tile.position.column + 1;
-      row++
-    ) {
+    for (let row = tile.position.row - 1; row <= tile.position.row + 1; row++) {
       if (row < 0 || row > tiles[column].length - 1) {
         break;
       }

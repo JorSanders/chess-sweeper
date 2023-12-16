@@ -61,8 +61,8 @@ const BoardStateReducer = (
         };
       }
       const newTiles = revealConnectedTiles(state.tiles, action.tile);
-      const remainingTile = newTiles.find((column) =>
-        column.find((tile) => !tile.revealed && !!tile.piece),
+      const remainingTile = newTiles.some((column) =>
+        column.some((tile) => !tile.revealed && !tile.piece),
       );
       if (!remainingTile) {
         return {
@@ -112,12 +112,15 @@ export const Board = ({ tilesPerRow, tilesPerColumn }: Props) => {
               return (
                 <Tile
                   key={`${tile.position.column}-${tile.position.row}`}
+                  data-tiles={`${tile.position.column}-${tile.position.row}`}
                   revealed={tile.revealed}
                   isDarkSquare={tile.isDarkSquare}
                   attackedByCount={tile.attackedByCount}
                   piece={tile.piece}
-                  onClick={() => {
-                    dispatch({ action: "reveal", tile });
+                  attributes={{
+                    onClick: () => {
+                      dispatch({ action: "reveal", tile });
+                    },
                   }}
                 ></Tile>
               );

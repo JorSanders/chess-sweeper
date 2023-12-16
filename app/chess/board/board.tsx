@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { generateTiles } from "../lib/generateTiles";
+import { revealAllTiles } from "../lib/realAllTiles";
 import { revealConnectedTiles } from "../lib/revealTiles";
 import { Tile } from "../tile/tile";
 import { Piece } from "../types/Piece";
@@ -27,7 +28,7 @@ export const Board = ({ pieces, tilesPerRow, tilesPerColumn }: Props) => {
     const nonRevealedTile = tiles.find((column) =>
       column.find((tile) => !tile.revealed),
     );
-    if (!nonRevealedTile) {
+    if (!nonRevealedTile && gameState !== "defeat") {
       setGameState("victory");
     }
   });
@@ -53,6 +54,7 @@ export const Board = ({ pieces, tilesPerRow, tilesPerColumn }: Props) => {
                   onClick={() => {
                     if (tile.piece) {
                       setGameState("defeat");
+                      setTiles(revealAllTiles(tiles));
                       return;
                     }
                     setTiles(revealConnectedTiles(tiles, tile));

@@ -6,7 +6,79 @@ interface Props {
   pieceCount: number;
 }
 
-const pieceType = ["p", "r", "k", "b", "k", "q"];
+interface Location {
+  row: number;
+  column: number;
+}
+
+const pieceTypeList = ["p", "r", "n", "b", "k", "q"] as const;
+type PieceType = (typeof pieceTypeList)[number];
+
+interface Piece {
+  location: Location;
+  type: PieceType;
+}
+
+const pieceAttacksSquare = (piece: Piece, target: Location) => {
+  const columnDelta = Math.abs(piece.location.column - target.column);
+  const rowDelta = Math.abs(piece.location.row - target.row);
+
+  switch (piece.type) {
+    case "p":
+      if (
+        piece.location.column === target.column - 1 &&
+        (piece.location.row + 1 === target.row ||
+          piece.location.row - 1 === target.row)
+      ) {
+        return true;
+      }
+      break;
+    case "r":
+      if (
+        piece.location.column === target.column ||
+        piece.location.row === target.row
+      ) {
+        return true;
+      }
+      break;
+    case "n":
+      if (
+        (columnDelta === 1 && rowDelta === 2) ||
+        (columnDelta === 2 && rowDelta === 1)
+      ) {
+        return true;
+      }
+      break;
+    case "b":
+      if (
+        piece.location.column - piece.location.row ===
+          target.column - target.row ||
+        piece.location.column + piece.location.row ===
+          target.column + target.row
+      ) {
+        return true;
+      }
+      break;
+    case "k":
+      if (rowDelta <= 1 && columnDelta <= 1) {
+        return true;
+      }
+      break;
+    case "q":
+      if (
+        piece.location.column === target.column ||
+        piece.location.row === target.row ||
+        piece.location.column - piece.location.row ===
+          target.column - target.row ||
+        piece.location.column + piece.location.row ===
+          target.column + target.row
+      ) {
+        return true;
+      }
+      break;
+  }
+  return false;
+};
 
 const generateUniqueLocations = ({
   tilesPerColumn,
@@ -17,7 +89,7 @@ const generateUniqueLocations = ({
   tilesPerRow: number;
   count: number;
 }) => {
-  const occupiedTiles: { row: number; column: number }[] = [];
+  const occupiedTiles: Location[] = [];
 
   while (occupiedTiles.length < count) {
     const location = {
@@ -47,10 +119,10 @@ const generatePieces = ({
     count,
   });
 
-  const pieces = locations.map((location) => {
+  const pieces: Piece[] = locations.map((location) => {
     return {
-      ...location,
-      type: pieceType[Math.floor(Math.random() * pieceType.length)],
+      location,
+      type: pieceTypeList[Math.floor(Math.random() * pieceTypeList.length)],
     };
   });
 
@@ -75,8 +147,18 @@ export const Chessboard = ({
       const isDarkSquare =
         columnIndex % 2 === 0 ? rowIndex % 2 === 0 : rowIndex % 2 === 1;
 
+      const attackedByCount = pieces.reduce((count, piece) => {
+        if (pieceAttacksSquare(piece, { row: rowIndex, column: columnIndex })) {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+
       const piece = pieces.find((piece) => {
-        return piece.row === rowIndex && piece.column === columnIndex;
+        return (
+          piece.location.row === rowIndex &&
+          piece.location.column === columnIndex
+        );
       });
 
       console.log(piece);
@@ -88,9 +170,7 @@ export const Chessboard = ({
             isDarkSquare ? styles.dark : styles.light
           }`}
         >
-          {piece
-            ? piece.type
-            : `${String.fromCharCode(96 + 1 + rowIndex)} ${columnIndex + 1} `}
+          {piece ? piece.type : attackedByCount}
         </button>
       );
     });

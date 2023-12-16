@@ -18,7 +18,8 @@ export const Chessboard = ({ itemsPerRow = 8, itemsPerColumn = 8 }: Props) => {
             isDarkSquare ? styles.dark : styles.light
           }`}
         >
-          {String.fromCharCode(96 + 1 + columnIndex)} {rowIndex + 1}
+          {String.fromCharCode(96 + 1 + rowIndex)}
+          {columnIndex + 1}
         </button>
       );
     });

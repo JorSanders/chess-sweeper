@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { generateTiles } from "../lib/generateTiles";
 import { revealAllTiles } from "../lib/realAllTiles";
-import { revealConnectedTiles } from "../lib/revealTiles";
+import { revealConnectedTiles } from "../lib/revealConnectedTiles";
 import { Tile } from "../tile/tile";
 import { Piece } from "../types/Piece";
 import { Tile as TileType } from "../types/Tile";

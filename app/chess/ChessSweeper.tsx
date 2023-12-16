@@ -8,7 +8,7 @@ export const ChessSweeper = () => {
   const pieces = generatePieces({
     tilesPerColumn,
     tilesPerRow,
-    count: 8,
+    count: 1,
   });
 
   return (

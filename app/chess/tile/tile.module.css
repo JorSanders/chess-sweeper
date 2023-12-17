@@ -1,18 +1,14 @@
 .tile {
-  height: 60px;
-  width: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
   border: unset;
   position: relative;
-  box-sizing: border-box;
   border-left: 5px solid #fefffe;
   border-top: 5px solid #fefffe;
   border-right: 6px solid #7b7b7b;
   border-bottom: 6px solid #7b7b7b;
-  box-shadow: 0 0px 10px 0 rgba(0, 0, 0, 0.5);
   cursor: pointer;
   font-weight: 700;
 }
@@ -21,11 +17,6 @@
   box-shadow: unset;
   border: unset;
   cursor: unset;
-}
-
-.icon {
-  height: 50px;
-  width: 50px;
 }
 
 .light {

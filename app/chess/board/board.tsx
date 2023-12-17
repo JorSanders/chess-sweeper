@@ -103,6 +103,7 @@ export const Board = () => {
         className={styles.board}
         style={{
           gridTemplateColumns: `repeat(${boardState.tiles[0]?.length}, 1fr)`,
+          gridTemplateRows: `repeat(${boardState.tiles.length}, 1fr)`,
         }}
       >
         {boardState.tiles
@@ -135,7 +136,7 @@ export const Board = () => {
             <p>by luck</p>
           </div>
           <div className={styles.dialogContent}>
-            <span>:D</span>
+            <h3>:D</h3>
           </div>
           <button
             type="button"
@@ -162,7 +163,7 @@ export const Board = () => {
             <p>on the pipi</p>
           </div>
           <div className={styles.dialogContent}>
-            <span>&gt;:</span>
+            <h3>&gt;:</h3>
           </div>
           <button
             type="button"

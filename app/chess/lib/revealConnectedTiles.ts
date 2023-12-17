@@ -25,7 +25,7 @@ const recursiveRevealTiles = (tiles: Tile[][], tile: Tile) => {
 };
 
 export const revealConnectedTiles = (tiles: Tile[][], tile: Tile): Tile[][] => {
-  // Don't mutate the values passed
+  // Don't mutate the original values passed
   const tilesCopy = JSON.parse(JSON.stringify(tiles));
   const tileCopy = tilesCopy[tile.position.column][tile.position.row];
 

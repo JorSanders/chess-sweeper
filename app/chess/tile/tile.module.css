@@ -5,10 +5,10 @@
   text-transform: uppercase;
   border: unset;
   position: relative;
-  border-left: 5px solid #fefffe;
-  border-top: 5px solid #fefffe;
-  border-right: 6px solid #4d4c4c;
-  border-bottom: 6px solid #4d4c4c;
+  border-left: 6px solid #fefffe;
+  border-top: 6px solid #fefffe;
+  border-right: 8px solid #4d4c4c;
+  border-bottom: 8px solid #4d4c4c;
   cursor: pointer;
   font-weight: 700;
 }

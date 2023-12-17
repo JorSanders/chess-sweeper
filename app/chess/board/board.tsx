@@ -5,13 +5,16 @@ import { generatePieces } from "../lib/generatePieces";
 import { generateTiles } from "../lib/generateTiles";
 import { revealAllTiles } from "../lib/realAllTiles";
 import { revealConnectedTiles } from "../lib/revealConnectedTiles";
+import { Pieces } from "../pieces/pieces";
 import { Tile } from "../tile/tile";
+import { Piece } from "../types/Piece";
 import { Tile as TileType } from "../types/Tile";
 import styles from "./board.module.css";
 
 interface BoardState {
   gameState: "playing" | "victory" | "defeat" | "initial";
   tiles: TileType[][];
+  pieces: Piece[];
 }
 
 type BoardAction =
@@ -44,13 +47,14 @@ const BoardStateReducer = (
         tilesPerRow,
         pieces,
       });
-      return { gameState: "playing", tiles: newTiles };
+      return { gameState: "playing", tiles: newTiles, pieces };
     }
     case "reveal": {
       if (action.tile.piece) {
         return {
           gameState: "defeat",
           tiles: revealAllTiles(state.tiles),
+          pieces: state.pieces,
         };
       }
       const newTiles = revealConnectedTiles(state.tiles, action.tile);
@@ -61,11 +65,13 @@ const BoardStateReducer = (
         return {
           gameState: "victory",
           tiles: revealAllTiles(state.tiles),
+          pieces: state.pieces,
         };
       }
       return {
         gameState: "playing",
         tiles: revealConnectedTiles(state.tiles, action.tile),
+        pieces: state.pieces,
       };
     }
   }
@@ -75,6 +81,7 @@ export const Board = () => {
   const [boardState, dispatch] = useReducer(BoardStateReducer, {
     gameState: "initial",
     tiles: [],
+    pieces: [],
   });
 
   const victoryDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -103,7 +110,7 @@ export const Board = () => {
         className={styles.board}
         style={{
           gridTemplateColumns: `repeat(${boardState.tiles[0]?.length}, 1fr)`,
-          gridTemplateRows: `repeat(${boardState.tiles.length}, 1fr)`,
+          gridTemplateRows: `repeat(${boardState.tiles.length + 1}, 1fr)`,
         }}
       >
         {boardState.tiles
@@ -112,7 +119,6 @@ export const Board = () => {
               return (
                 <Tile
                   key={`${tile.position.column}-${tile.position.row}`}
-                  data-tiles={`${tile.position.column}-${tile.position.row}`}
                   revealed={tile.revealed}
                   isDarkSquare={tile.isDarkSquare}
                   attackedByCount={tile.attackedByCount}
@@ -127,6 +133,7 @@ export const Board = () => {
             });
           })
           .reverse()}
+        <Pieces pieces={boardState.pieces}></Pieces>
       </div>
 
       <dialog ref={victoryDialogRef} className={styles.dialog}>

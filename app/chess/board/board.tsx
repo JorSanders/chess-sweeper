@@ -85,7 +85,7 @@ export const Board = () => {
       action: "start",
       tilesPerColumn: 8,
       tilesPerRow: 8,
-      pieceCount: 5,
+      pieceCount: 64,
     });
   }, []);
 
@@ -147,7 +147,7 @@ export const Board = () => {
                 action: "start",
                 tilesPerColumn: 8,
                 tilesPerRow: 8,
-                pieceCount: 5,
+                pieceCount: 64,
               });
             }}
           >
@@ -174,7 +174,7 @@ export const Board = () => {
                 action: "start",
                 tilesPerColumn: 8,
                 tilesPerRow: 8,
-                pieceCount: 5,
+                pieceCount: 64,
               });
             }}
           >

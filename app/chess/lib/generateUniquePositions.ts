@@ -17,7 +17,11 @@ export const generateUniqueLocations = ({
       column: Math.floor(Math.random() * tilesPerColumn),
     };
 
-    if (!occupiedTiles.includes(location)) {
+    if (
+      !occupiedTiles.some((tile) => {
+        return tile.row === location.row && tile.column === location.column;
+      })
+    ) {
       occupiedTiles.push(location);
     }
   }

@@ -47,12 +47,18 @@ Dev URL parameters: `?pos=<id>` forces the first position, `?fen=<placement>` lo
 
 1. Add an entry to `src/positions.js` (`id`, `kind`, `name`, `white`, `black`, `event`, `year`, `result`, `moveNote`, `blurb`, `link`, plus either a `pgn` with optional `ply`, or a direct `fen`). See `scripts/build-positions.js` for the field order. Keep it to about 12 pieces or fewer; crowded boards are too hard. `npm run positions` rejects a position unless at least one square with no attackers opens an area that still leaves 5 or more safe squares to find; `npm run stats` shows how many squares each possible opening leaves.
 2. Run `npm run positions` to replay any PGNs, validate every FEN with chess.js and rewrite the file.
-3. Run `npm run stats` and check that the new position has enough zero squares to be fun. The `oneClick` column points out positions that a single lucky reveal clears outright.
+3. Run `npm run stats` and check that the new position has enough zero squares to be fun. The `openings` column counts the zero-attack squares that make a fair start, meaning their cascade still leaves at least 5 safe squares to find, and `leftAfter` gives the range of safe squares those openings leave hidden.
 
 ## Hosting
 
 The site is plain static files with relative paths, so it works on GitHub Pages at a custom domain or under a `/repo/` path.
 
+- `favicon.svg`, `favicon.ico` (a 32x32 PNG), `apple-touch-icon.png` and the 1200x630 `og-image.png` social preview sit at the root. The Open Graph tags and canonical link in `index.html` use absolute `https://chess-sweeper.jor.dev/` URLs.
+- A short footer below the controls explains the game and credits Wikipedia and the GitHub source.
 - `CNAME` contains `chess-sweeper.jor.dev` and `.nojekyll` disables Jekyll.
 - Add a DNS CNAME record `chess-sweeper` pointing to `<user>.github.io`.
 - In the repository settings, enable Pages from the `main` branch, root folder.
+
+## Credits
+
+The favicon knight is the U+265E glyph from [Noto Sans Symbols 2](https://github.com/notofonts/symbols), licensed under the SIL Open Font License 1.1.

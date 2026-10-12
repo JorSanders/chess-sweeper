@@ -1,4 +1,5 @@
 :root {
+  --picker-columns: 6;
   --bg: #f3f4f6;
   --surface: #ffffff;
   --surface-2: #e8ebf0;
@@ -544,7 +545,7 @@ body {
 
 .picker-grid {
   display: grid;
-  grid-template-columns: repeat(6, 40px);
+  grid-template-columns: repeat(var(--picker-columns), 40px);
   grid-auto-rows: 40px;
   gap: 4px;
 }
@@ -666,4 +667,27 @@ body {
     flex: 1;
     justify-content: space-between;
   }
+}
+
+.about {
+  margin-top: 8px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.about p {
+  margin: 0 0 8px;
+}
+
+.about p:last-child {
+  margin-bottom: 0;
+}
+
+.about a {
+  color: var(--accent);
 }

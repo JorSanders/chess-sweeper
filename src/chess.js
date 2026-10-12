@@ -38,13 +38,6 @@ export function idxToAlg(idx) {
   return FILES[idx % 8] + (8 - Math.floor(idx / 8));
 }
 
-/** Converts algebraic notation such as "e4" to a square index, or throws. */
-export function algToIdx(alg) {
-  const match = /^([a-h])([1-8])$/.exec(alg);
-  if (!match) throw new Error(`Invalid square: ${alg}`);
-  return (8 - Number(match[2])) * 8 + FILES.indexOf(match[1]);
-}
-
 /**
  * Parses the piece-placement field of a FEN string.
  * @returns {Array<string|null>} 64 entries, each a piece letter or null.
@@ -136,13 +129,4 @@ export function computeAttackCounts(board) {
     for (const target of attacksFrom(board, idx)) counts[target]++;
   }
   return counts;
-}
-
-/** Returns the indices of all pieces that attack the square idx. */
-export function attackersOf(board, idx) {
-  const attackers = [];
-  for (let from = 0; from < 64; from++) {
-    if (attacksFrom(board, from).includes(idx)) attackers.push(from);
-  }
-  return attackers;
 }

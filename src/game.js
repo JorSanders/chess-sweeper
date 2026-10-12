@@ -36,13 +36,14 @@ export function newGame(position, mode = MODES.HIDDEN) {
     endedAt: null,
   };
   openStartSquare(state);
+  settleWin(state);
   return state;
 }
 
 export const MIN_LEFT_AFTER_OPENING = 5;
 
 /** Counts how many squares a flood reveal from start would open on a fresh board. */
-function cascadeSize(board, counts, start) {
+export function cascadeSize(board, counts, start) {
   const seen = new Uint8Array(64);
   const stack = [start];
   seen[start] = 1;
@@ -105,11 +106,15 @@ export function reveal(state, idx) {
   }
   if (state.startedAt === null) state.startedAt = Date.now();
   const opened = floodReveal(state, idx);
-  if (state.revealedSafe === state.safeTotal) {
-    state.status = 'won';
-    state.endedAt = Date.now();
-  }
+  settleWin(state);
   return opened;
+}
+
+/** Marks a game in progress as won once every safe square is revealed. */
+function settleWin(state) {
+  if (state.status !== 'playing' || state.revealedSafe !== state.safeTotal) return;
+  state.status = 'won';
+  state.endedAt = Date.now();
 }
 
 /**

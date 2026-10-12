@@ -12,10 +12,22 @@ const KEY_ORDER = [
   'moveNote', 'pgn', 'ply', 'fen', 'blurb', 'link',
 ];
 
-/** Splits a PGN move list into SAN tokens, dropping move numbers and result markers. */
+/** Removes parenthesised variations from PGN text, innermost first so nested ones go too. */
+function stripVariations(text) {
+  let current = text;
+  let previous = '';
+  while (current !== previous) {
+    previous = current;
+    current = current.replace(/\([^()]*\)/g, ' ');
+  }
+  return current;
+}
+
+/** Splits a PGN move list into SAN tokens, dropping comments, variations, NAGs, move numbers and result markers. */
 function sanMoves(pgn) {
-  return pgn
-    .replace(/\{[^}]*\}/g, ' ')
+  const withoutComments = pgn.replace(/\{[^}]*\}/g, ' ').replace(/;[^\n]*/g, ' ');
+  return stripVariations(withoutComments)
+    .replace(/\$\d+/g, ' ')
     .split(/\s+/)
     .map((token) => token.replace(/^\d+\.(\.\.)?/, ''))
     .filter((token) => token && !/^(1-0|0-1|1\/2-1\/2|\*)$/.test(token));

@@ -1,30 +1,12 @@
 import { parseFen, computeAttackCounts, isWhite } from '../src/chess.js';
-import { zeroRegions, openingSquares } from '../src/game.js';
+import { zeroRegions, openingSquares, cascadeSize } from '../src/game.js';
 import { POSITIONS } from '../src/positions.js';
 
 const MIN_ZERO_SQUARES = 6;
 
 /** Returns how many safe squares remain hidden after opening each fair start square. */
 function leftAfterOpenings(board, counts, safe) {
-  return openingSquares(board, counts).map((start) => {
-    const seen = new Set([start]);
-    const queue = [start];
-    while (queue.length > 0) {
-      const idx = queue.shift();
-      if (counts[idx] !== 0) continue;
-      for (let r = -1; r <= 1; r++) {
-        for (let f = -1; f <= 1; f++) {
-          const row = Math.floor(idx / 8) + r;
-          const file = (idx % 8) + f;
-          const next = row * 8 + file;
-          if (row < 0 || row > 7 || file < 0 || file > 7 || seen.has(next) || board[next]) continue;
-          seen.add(next);
-          queue.push(next);
-        }
-      }
-    }
-    return safe - seen.size;
-  });
+  return openingSquares(board, counts).map((start) => safe - cascadeSize(board, counts, start));
 }
 
 /** Computes the suitability figures for one position. */

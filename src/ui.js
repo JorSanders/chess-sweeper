@@ -186,6 +186,7 @@ function present(value) {
 
 /** Builds the result headline for a finished game. */
 function headline(state) {
+  if (state.status === 'won' && state.startedAt === null) return 'The opening reveal cleared the whole board!';
   if (state.status === 'won') return `Board cleared in ${formatTime(elapsedMs(state))}!`;
   const piece = state.board[state.lostAt];
   return `Captured on ${idxToAlg(state.lostAt)} by the ${PIECE_NAMES[piece]}!`;

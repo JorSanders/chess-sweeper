@@ -13,11 +13,12 @@ const DIFFICULTIES = {
   hard: (n) => n >= 9,
 };
 const PICKER_MARGIN_PX = 8;
-const PICKER_COLUMNS = 6;
+const DEFAULT_PICKER_COLUMNS = 6;
 const LONG_PRESS_MS = 450;
 const MOVE_TOLERANCE_PX = 10;
 const CONTEXTMENU_GRACE_MS = 600;
 const TIMER_TICK_MS = 250;
+const SWALLOW_CLICK_MS = 400;
 
 const els = {
   board: document.getElementById('board'),
@@ -41,6 +42,7 @@ let lastPiece = null;
 let pickButtons = [];
 let pickerIdx = -1;
 let swallowClick = false;
+let swallowTimerId = 0;
 let focusIdx = 0;
 let timerId = 0;
 let suppressNextClick = false;
@@ -92,7 +94,7 @@ function pickRandom() {
 /** Applies the dev URL parameters ?pos, ?fen and ?mode. */
 function readParams() {
   const savedDifficulty = readStorage(DIFFICULTY_KEY);
-  if (savedDifficulty && savedDifficulty in DIFFICULTIES) {
+  if (savedDifficulty && Object.hasOwn(DIFFICULTIES, savedDifficulty)) {
     els.difficultyInputs.forEach((input) => { input.checked = input.value === savedDifficulty; });
   }
   const params = new URLSearchParams(window.location.search);
@@ -139,6 +141,10 @@ function startGame(position) {
   cells = buildBoard(els.board, focusIdx);
   render(state, cells);
   if (hadFocus) cells[focusIdx].focus();
+  if (state.status !== 'playing') {
+    fillResult(state);
+    return;
+  }
   timerId = setInterval(() => renderTimer(state), TIMER_TICK_MS);
 }
 
@@ -241,6 +247,13 @@ function onPickerClick(event) {
   else if (button.dataset.piece) choosePiece(button.dataset.piece);
 }
 
+/** Reads the picker's column count from the --picker-columns CSS property that also lays out its grid. */
+function pickerColumns() {
+  const value = getComputedStyle(document.documentElement).getPropertyValue('--picker-columns');
+  const columns = Number.parseInt(value, 10);
+  return columns > 0 ? columns : DEFAULT_PICKER_COLUMNS;
+}
+
 /** Handles Escape, Tab wrapping and arrow-key movement inside the picker. */
 function onPickerKeyDown(event) {
   if (event.key === 'Escape') {
@@ -258,7 +271,8 @@ function onPickerKeyDown(event) {
   }
   const pick = pickButtons.indexOf(document.activeElement);
   if (pick < 0) return;
-  const moves = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -PICKER_COLUMNS, ArrowDown: PICKER_COLUMNS };
+  const columns = pickerColumns();
+  const moves = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns };
   if (!(event.key in moves)) return;
   event.preventDefault();
   const next = pick + moves[event.key];
@@ -266,19 +280,34 @@ function onPickerKeyDown(event) {
   else if (event.key === 'ArrowDown' && !els.pickerClear.disabled) els.pickerClear.focus();
 }
 
-/** Closes the picker on a press outside it, and swallows the click that press would cause. */
-function onDocumentPointerDown(event) {
+/** Stops swallowing clicks and cancels the pending reset. */
+function clearSwallow() {
+  clearTimeout(swallowTimerId);
+  swallowTimerId = 0;
   swallowClick = false;
-  if (pickerIdx < 0 || els.picker.contains(event.target)) return;
-  event.stopPropagation();
-  closePicker(false);
-  if (event.button === 0) swallowClick = true;
 }
 
-/** Swallows the click that follows a press which closed the picker. */
-function onDocumentClick(event) {
+/** Closes the picker on a press outside it; a primary press on a square also swallows the click it would cause, so it does not reveal. */
+function onDocumentPointerDown(event) {
+  clearSwallow();
+  if (pickerIdx < 0 || els.picker.contains(event.target)) return;
+  const onCell = cellIndex(event.target) >= 0;
+  if (onCell) event.stopPropagation();
+  closePicker(false);
+  if (onCell && event.button === 0) swallowClick = true;
+}
+
+/** Lets a swallowed click arrive after the press ends, then forgets it so it cannot go stale. */
+function onDocumentPointerUp() {
   if (!swallowClick) return;
-  swallowClick = false;
+  clearTimeout(swallowTimerId);
+  swallowTimerId = setTimeout(clearSwallow, SWALLOW_CLICK_MS);
+}
+
+/** Swallows the pointer click that follows a press on a square which closed the picker. */
+function onDocumentClick(event) {
+  if (!swallowClick || event.detail === 0) return;
+  clearSwallow();
   event.stopPropagation();
   event.preventDefault();
 }
@@ -309,7 +338,7 @@ function fireLongPress() {
   const idx = press.idx;
   press.timerId = 0;
   press.idx = -1;
-  if (idx < 0) return;
+  if (idx < 0 || !canMark(state, idx)) return;
   suppressNextClick = true;
   longPressAt = performance.now();
   navigator.vibrate?.(30);
@@ -329,12 +358,16 @@ function onClick(event) {
   activate(idx);
 }
 
-/** Handles right-click and the browser's long-press context menu. */
+/** Handles right-click and the browser's long-press context menu, leaving the native menu alone on squares that cannot be marked. */
 function onContextMenu(event) {
   const idx = cellIndex(event.target);
   if (idx < 0) return;
+  if (performance.now() - longPressAt < CONTEXTMENU_GRACE_MS) {
+    event.preventDefault();
+    return;
+  }
+  if (!canMark(state, idx)) return;
   event.preventDefault();
-  if (performance.now() - longPressAt < CONTEXTMENU_GRACE_MS) return;
   if (press.timerId) {
     const touchLike = press.pointerType !== 'mouse';
     cancelPress();
@@ -352,7 +385,7 @@ function onPointerDown(event) {
   suppressNextClick = false;
   if (!event.isPrimary || event.button !== 0) return;
   const idx = cellIndex(event.target);
-  if (idx < 0) return;
+  if (idx < 0 || !canMark(state, idx)) return;
   cancelPress();
   press.idx = idx;
   press.x = event.clientX;
@@ -421,6 +454,8 @@ function init() {
   els.picker.addEventListener('click', onPickerClick);
   els.picker.addEventListener('keydown', onPickerKeyDown);
   document.addEventListener('pointerdown', onDocumentPointerDown, true);
+  document.addEventListener('pointerup', onDocumentPointerUp, true);
+  document.addEventListener('pointercancel', clearSwallow, true);
   document.addEventListener('click', onDocumentClick, true);
   window.addEventListener('resize', positionPicker);
   window.addEventListener('scroll', positionPicker, { passive: true });

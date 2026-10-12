@@ -1,0 +1,17 @@
+{
+  "name": "chess-sweeper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "positions": "node scripts/build-positions.js",
+    "stats": "node scripts/stats.js",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "chess.js": "^1.4.0"
+  }
+}

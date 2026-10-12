@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Chess-Sweeper: Minesweeper played on a famous chess position. Reveal every empty square without capturing a piece.">
+  <meta name="color-scheme" content="light dark">
+  <title>Chess-Sweeper</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="top-row">
+      <h1>Chess-Sweeper</h1>
+      <button type="button" id="mark-mode" class="btn btn-toggle" aria-pressed="false"><span aria-hidden="true">♞︎</span> Mark mode</button>
+      <div class="end-actions" id="end-actions" hidden>
+        <a href="#result" id="banner" class="banner"></a>
+        <button type="button" id="next-game" class="btn btn-primary">Next game</button>
+      </div>
+    </header>
+
+    <section class="status" aria-live="polite" aria-label="Game status">
+      <span class="stat" title="Pieces unmarked"><span aria-hidden="true">♟︎</span> <span id="remaining">0</span><span class="visually-hidden"> pieces unmarked</span></span>
+      <span class="stat" title="Safe squares revealed"><span id="progress">0/0</span><span class="visually-hidden"> safe squares revealed</span></span>
+      <span class="stat" id="timer" role="timer" aria-live="off">00:00</span>
+      <span class="stat status-text" id="status-text">Tap a square to begin</span>
+    </section>
+
+    <div class="board-wrap" id="board-wrap">
+      <div class="board-frame">
+        <div class="ranks" aria-hidden="true"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+        <div class="board" id="board" role="grid" aria-label="Chess board"></div>
+        <div class="corner" aria-hidden="true"></div>
+        <div class="files" aria-hidden="true"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+      </div>
+    </div>
+
+    <div id="picker" class="picker" role="dialog" aria-label="Mark square" hidden>
+      <div class="picker-grid" id="picker-grid"></div>
+      <button type="button" id="picker-clear" class="btn picker-clear">Clear</button>
+    </div>
+
+    <section id="result" class="result" aria-labelledby="result-headline" hidden>
+      <p class="result-headline" id="result-headline"></p>
+      <p id="result-marks" class="result-marks"></p>
+      <h2 id="result-name"></h2>
+      <p id="result-players"></p>
+      <p id="result-event" class="muted"></p>
+      <p id="result-outcome" class="muted"></p>
+      <p id="result-move" class="muted"></p>
+      <p id="result-blurb"></p>
+      <p><a id="result-link" href="#" target="_blank" rel="noopener">Read more</a></p>
+      <button type="button" id="new-random" class="btn btn-primary">New random position</button>
+    </section>
+
+    <section class="controls" aria-label="Game controls">
+      <fieldset class="segmented">
+        <legend class="visually-hidden">Mode</legend>
+        <label><input type="radio" name="mode" value="hidden" checked><span>Both sides hidden</span></label>
+        <label><input type="radio" name="mode" value="white"><span>White shown</span></label>
+        <label><input type="radio" name="mode" value="black"><span>Black shown</span></label>
+      </fieldset>
+      <fieldset class="segmented">
+        <legend class="visually-hidden">Difficulty</legend>
+        <label title="Any position"><input type="radio" name="difficulty" value="all" checked><span>All</span></label>
+        <label title="5 pieces or fewer"><input type="radio" name="difficulty" value="easy"><span>Easy</span></label>
+        <label title="6 to 8 pieces"><input type="radio" name="difficulty" value="medium"><span>Medium</span></label>
+        <label title="9 pieces or more"><input type="radio" name="difficulty" value="hard"><span>Hard</span></label>
+      </fieldset>
+      <button type="button" id="new-game" class="btn">New game</button>
+    </section>
+  </main>
+</body>
+</html>

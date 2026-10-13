@@ -16,9 +16,8 @@ Live (once published): https://chess-sweeper.jor.dev
 
 ## Modes
 
-- **Both sides hidden** (default): nothing is shown.
-- **White shown**: White's pieces are visible from the start and cannot be clicked.
-- **Black shown**: the same for Black's pieces.
+- **One side shown** (default): White's or Black's pieces, picked at random each game, are visible from the start and cannot be clicked.
+- **Both sides hidden**: nothing is shown.
 
 ## Difficulty
 
@@ -39,9 +38,9 @@ npm install
 npm run serve
 ```
 
-Then open http://localhost:8000.
+Then open http://localhost:6767.
 
-Dev URL parameters: `?pos=<id>` forces the first position, `?fen=<placement>` loads an ad-hoc board for the first game, and `?mode=hidden|white|black` preselects the mode. Later games are random again.
+Dev URL parameters: `?pos=<id>` forces the first position, `?fen=<placement>` loads an ad-hoc board for the first game, and `?mode=one|hidden` preselects the mode. Later games are random again.
 
 ## Adding a position
 

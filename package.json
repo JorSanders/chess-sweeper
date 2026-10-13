@@ -9,7 +9,7 @@
   "scripts": {
     "positions": "node scripts/build-positions.js",
     "stats": "node scripts/stats.js",
-    "serve": "python3 -m http.server 8000"
+    "serve": "python3 -m http.server 6767"
   },
   "devDependencies": {
     "chess.js": "^1.4.0"

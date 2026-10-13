@@ -74,9 +74,8 @@
     <section class="controls" aria-label="Game controls">
       <fieldset class="segmented">
         <legend class="visually-hidden">Mode</legend>
-        <label><input type="radio" name="mode" value="hidden" checked><span>Both sides hidden</span></label>
-        <label><input type="radio" name="mode" value="white"><span>White shown</span></label>
-        <label><input type="radio" name="mode" value="black"><span>Black shown</span></label>
+        <label title="White or Black, picked at random each game"><input type="radio" name="mode" value="one" checked><span>One side shown</span></label>
+        <label><input type="radio" name="mode" value="hidden"><span>Both sides hidden</span></label>
       </fieldset>
       <fieldset class="segmented">
         <legend class="visually-hidden">Difficulty</legend>
@@ -89,7 +88,7 @@
     </section>
 
     <footer class="about">
-      <p>Chess-Sweeper is Minesweeper played on famous chess positions. Each number counts the pieces of either colour attacking that square, squares nobody attacks open their neighbours, and tapping a piece means it captures you. Mark the squares where you think a piece stands, pick one of three visibility modes and a difficulty filter, and see which position it was, with its story, when the game ends.</p>
+      <p>Chess-Sweeper is Minesweeper played on famous chess positions. Each number counts the pieces of either colour attacking that square, squares nobody attacks open their neighbours, and tapping a piece means it captures you. Mark the squares where you think a piece stands, show one side or hide both and a difficulty filter, and see which position it was, with its story, when the game ends.</p>
       <p>Positions and summaries are drawn from Wikipedia's articles on <a href="https://en.wikipedia.org/wiki/List_of_chess_games" target="_blank" rel="noopener">famous games</a>, <a href="https://en.wikipedia.org/wiki/Endgame_study" target="_blank" rel="noopener">endgame studies</a> and endgame theory. Source code on <a href="https://github.com/JorSanders/chess-sweeper" target="_blank" rel="noopener">GitHub</a>.</p>
     </footer>
   </main>

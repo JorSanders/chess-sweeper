@@ -596,7 +596,7 @@ body {
 }
 
 @media (hover: hover) {
-  .cell.fog:not(.known):hover {
+  .cell.fog:hover {
     background-image: linear-gradient(var(--fog-hover), var(--fog-hover));
   }
 

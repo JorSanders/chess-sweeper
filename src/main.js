@@ -121,7 +121,7 @@ function readParams() {
 
 /** Returns the currently selected mode. */
 function currentMode() {
-  return els.modeInputs.find((input) => input.checked)?.value ?? MODES.HIDDEN;
+  return els.modeInputs.find((input) => input.checked)?.value ?? MODES.ONE_SIDE;
 }
 
 /** Stops the timer interval. */

@@ -78,7 +78,7 @@ export function cellView(state, idx) {
   if (state.status !== 'playing') return finishedView(state, idx, square);
   if (state.known[idx]) {
     const piece = state.board[idx];
-    return { kind: 'known', text: pieceGlyph(piece), classes: ['fog', 'known', pieceClass(piece)], label: `${square}, ${PIECE_NAMES[piece]} (known)` };
+    return { kind: 'known', text: pieceGlyph(piece), classes: ['known', pieceClass(piece)], label: `${square}, ${PIECE_NAMES[piece]} (known)` };
   }
   if (state.revealed[idx]) {
     const count = state.counts[idx];

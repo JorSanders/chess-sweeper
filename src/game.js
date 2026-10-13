@@ -1,9 +1,10 @@
 import { NEIGHBORS, parseFen, isWhite, computeAttackCounts } from './chess.js';
 
-export const MODES = { HIDDEN: 'hidden', WHITE: 'white', BLACK: 'black' };
+export const MODES = { ONE_SIDE: 'one', HIDDEN: 'hidden' };
 
-/** Creates a fresh game state for a position; in white/black mode that colour's pieces start known. */
-export function newGame(position, mode = MODES.HIDDEN) {
+/** Creates a fresh game state for a position; in one-side mode a random colour's pieces start known. */
+export function newGame(position, mode = MODES.ONE_SIDE, rng = Math.random) {
+  const shownWhite = mode === MODES.ONE_SIDE ? rng() < 0.5 : null;
   const board = parseFen(position.fen);
   const counts = computeAttackCounts(board);
   const known = new Uint8Array(64);
@@ -13,7 +14,7 @@ export function newGame(position, mode = MODES.HIDDEN) {
     const piece = board[idx];
     if (!piece) continue;
     pieceCount++;
-    if ((mode === MODES.WHITE && isWhite(piece)) || (mode === MODES.BLACK && !isWhite(piece))) {
+    if (shownWhite !== null && isWhite(piece) === shownWhite) {
       known[idx] = 1;
       knownCount++;
     }

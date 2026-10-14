@@ -52,12 +52,12 @@ Dev URL parameters: `?pos=<id>` forces the first position, `?fen=<placement>` lo
 
 The site is plain static files with relative paths, so it works on GitHub Pages at a custom domain or under a `/repo/` path.
 
-- `favicon.svg`, `favicon.ico` (a 32x32 PNG), `apple-touch-icon.png` and the 1200x630 `og-image.png` social preview sit at the root. The Open Graph tags and canonical link in `index.html` use absolute `https://chess-sweeper.jor.dev/` URLs.
-- A short footer below the controls explains the game and credits Wikipedia and the GitHub source.
+- `favicon.svg`, `favicon.ico` and `apple-touch-icon.png` are the jor.dev icon set, copied to the root by the brand install script, and the 1200x630 `og-image.png` social preview sits next to them. The Open Graph tags and canonical link in `index.html` use absolute `https://chess-sweeper.jor.dev/` URLs.
+- The shared jor.dev footer at the end of the page explains the game and credits Wikipedia and the GitHub source. `robots.txt` and `sitemap.xml` point crawlers at the canonical URL.
 - `CNAME` contains `chess-sweeper.jor.dev` and `.nojekyll` disables Jekyll.
 - Add a DNS CNAME record `chess-sweeper` pointing to `<user>.github.io`.
 - In the repository settings, enable Pages from the `main` branch, root folder.
 
 ## Credits
 
-The favicon knight is the U+265E glyph from [Noto Sans Symbols 2](https://github.com/notofonts/symbols), licensed under the SIL Open Font License 1.1.
+The favicon, the wordmark and the fonts come from my jor.dev brand kit in `brand/`: the logo is set in Space Mono and the text in Montserrat, both under the SIL Open Font License 1.1 (see `brand/fonts/SpaceMono-OFL.txt`). The piece glyphs are whatever chess symbol font your system has.

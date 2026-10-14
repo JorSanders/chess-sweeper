@@ -3,37 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Chess-Sweeper: Minesweeper played on a famous chess position. Reveal every empty square without capturing a piece.">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)">
-  <title>Chess-Sweeper</title>
+  <title>Chess-Sweeper: Minesweeper on famous chess positions</title>
+  <meta name="description" content="Minesweeper played on famous chess positions. The pieces are the mines, the numbers count attackers, and you win by revealing every empty square.">
   <link rel="canonical" href="https://chess-sweeper.jor.dev/">
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f3f3f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121417" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://chess-sweeper.jor.dev/">
-  <meta property="og:title" content="Chess-Sweeper">
-  <meta property="og:description" content="Minesweeper on famous chess positions. Numbers count the pieces attacking a square; reveal every empty square without capturing a piece.">
+  <meta property="og:title" content="Chess-Sweeper: Minesweeper on famous chess positions">
+  <meta property="og:description" content="Minesweeper played on famous chess positions. The pieces are the mines, the numbers count attackers, and you win by revealing every empty square.">
   <meta property="og:image" content="https://chess-sweeper.jor.dev/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="A fogged chess board with numbered squares, a rook and a king, next to the title Chess-Sweeper.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Chess-Sweeper">
-  <meta name="twitter:description" content="Minesweeper on famous chess positions. Numbers count the pieces attacking a square; reveal every empty square without capturing a piece.">
+  <meta name="twitter:title" content="Chess-Sweeper: Minesweeper on famous chess positions">
+  <meta name="twitter:description" content="Minesweeper played on famous chess positions. The pieces are the mines, the numbers count attackers, and you win by revealing every empty square.">
   <meta name="twitter:image" content="https://chess-sweeper.jor.dev/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/x-icon" sizes="32x32" href="./favicon.ico">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="preload" href="./brand/fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./brand/fonts/Montserrat-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./brand/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./brand/fonts/SpaceMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="./brand/tokens.css">
+  <link rel="stylesheet" href="./brand/base.css">
   <link rel="stylesheet" href="./style.css">
+  <script src="./brand/theme.js"></script>
   <script type="module" src="./src/main.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Chess-Sweeper",
+    "url": "https://chess-sweeper.jor.dev/",
+    "description": "Minesweeper played on famous chess positions. The pieces are the mines, the numbers count attackers, and you win by revealing every empty square.",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "image": "https://chess-sweeper.jor.dev/og-image.png",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "author": { "@type": "Person", "name": "Jor Sanders", "url": "https://jor.dev" }
+  }
+  </script>
 </head>
 <body>
-  <main class="app">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand-link" href="https://jor.dev">
+      <img class="only-light" src="./brand/logo/wordmark.svg" alt="jor.dev" />
+      <img class="only-dark" src="./brand/logo/wordmark-on-dark.svg" alt="jor.dev" />
+    </a>
+    <div class="theme-picker" role="group" aria-label="Color scheme">
+      <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+    </div>
+  </header>
+  <main class="app" id="main">
     <header class="top-row">
       <h1>Chess-Sweeper</h1>
-      <button type="button" id="mark-mode" class="btn btn-toggle" aria-pressed="false"><span aria-hidden="true">♞︎</span> Mark mode</button>
+      <button type="button" id="mark-mode" class="button button-outline" aria-pressed="false"><span aria-hidden="true">♞︎</span> Mark mode</button>
       <div class="end-actions" id="end-actions" hidden>
         <a href="#result" id="banner" class="banner"></a>
-        <button type="button" id="next-game" class="btn btn-primary">Next game</button>
+        <button type="button" id="next-game" class="button">Next game</button>
       </div>
     </header>
 
@@ -55,7 +90,7 @@
 
     <div id="picker" class="picker" role="dialog" aria-label="Mark square" hidden>
       <div class="picker-grid" id="picker-grid"></div>
-      <button type="button" id="picker-clear" class="btn picker-clear">Clear</button>
+      <button type="button" id="picker-clear" class="button button-outline picker-clear">Clear</button>
     </div>
 
     <section id="result" class="result" aria-labelledby="result-headline" hidden>
@@ -67,8 +102,8 @@
       <p id="result-outcome" class="muted"></p>
       <p id="result-move" class="muted"></p>
       <p id="result-blurb"></p>
-      <p><a id="result-link" href="#" target="_blank" rel="noopener">Read more</a></p>
-      <button type="button" id="new-random" class="btn btn-primary">New random position</button>
+      <p><a id="result-link" href="#">Read more on Wikipedia</a></p>
+      <button type="button" id="new-random" class="button">New random position</button>
     </section>
 
     <section class="controls" aria-label="Game controls">
@@ -84,13 +119,18 @@
         <label title="6 to 8 pieces"><input type="radio" name="difficulty" value="medium"><span>Medium</span></label>
         <label title="9 pieces or more"><input type="radio" name="difficulty" value="hard"><span>Hard</span></label>
       </fieldset>
-      <button type="button" id="new-game" class="btn">New game</button>
+      <button type="button" id="new-game" class="button button-outline">New game</button>
     </section>
-
-    <footer class="about">
-      <p>Chess-Sweeper is Minesweeper played on famous chess positions. Each number counts the pieces of either colour attacking that square, squares nobody attacks open their neighbours, and tapping a piece means it captures you. Mark the squares where you think a piece stands, show one side or hide both and a difficulty filter, and see which position it was, with its story, when the game ends.</p>
-      <p>Positions and summaries are drawn from Wikipedia's articles on <a href="https://en.wikipedia.org/wiki/List_of_chess_games" target="_blank" rel="noopener">famous games</a>, <a href="https://en.wikipedia.org/wiki/Endgame_study" target="_blank" rel="noopener">endgame studies</a> and endgame theory. Source code on <a href="https://github.com/JorSanders/chess-sweeper" target="_blank" rel="noopener">GitHub</a>.</p>
-    </footer>
   </main>
+  <footer class="site-footer">
+    <p>Chess-Sweeper is my take on Minesweeper, played on famous chess positions instead of a random minefield. The pieces are the mines, every number counts the pieces attacking that square, and you win by uncovering every empty square. Mark the squares where you think a piece hides, then find out which classic game or study it was.</p>
+    <p>Positions and summaries are drawn from Wikipedia's articles on <a href="https://en.wikipedia.org/wiki/List_of_chess_games">famous games</a>, <a href="https://en.wikipedia.org/wiki/Endgame_study">endgame studies</a> and endgame theory. Nothing leaves your browser.</p>
+    <p class="site-footer-tagline">Provided free of charge, without tracking. For the love of the game.</p>
+    <p class="site-footer-meta">
+      <span>Made by <a href="https://jor.dev">Jor Sanders</a></span>
+      <a href="https://github.com/JorSanders/chess-sweeper">Source on GitHub</a>
+      <a href="https://github.com/JorSanders/chess-sweeper/issues">Found a problem?</a>
+    </p>
+  </footer>
 </body>
 </html>
